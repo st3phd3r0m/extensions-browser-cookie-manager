@@ -13,7 +13,7 @@ async function loadCookies() {
   cookies.forEach((cookie) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${cookie.name}</td>
+      <td><span class="arrowSwitch">${"\u25B6"}</span> ${cookie.name}</td>
       <td>${cookie.domain}</td>
     `;
 
@@ -29,16 +29,19 @@ async function loadCookies() {
             cookie.value
           }</textarea>
           
-          <label>
-          <input type="checkbox" name="secure" ${
+          <div class="boxes">
+            <label>
+            <input type="checkbox" name="secure" ${
             cookie.secure ? "checked" : ""
-          }>Secure</label>
-            
-          <label>
-          <input type="checkbox" name="httpOnly" ${
-            cookie.httpOnly ? "checked" : ""
-          }>HttpOnly</label>
-          <div>          
+            }>Secure</label>
+              
+            <label>
+            <input type="checkbox" name="httpOnly" ${
+              cookie.httpOnly ? "checked" : ""
+            }>HttpOnly</label>          
+          </div>
+
+          <div class="cta">          
             <button type="button" class="edit">Éditer</button>
             <button type="button" class="delete">Supprimer</button>
           </div>
@@ -57,6 +60,8 @@ async function loadCookies() {
         trEdit.style.display === "none"
           ? "auto"
           : cookieValueArea.scrollHeight + "px";
+      tr.querySelector(".arrowSwitch").textContent =
+        trEdit.style.display === "none" ? "\u25B6" : "\u25BC";
     };
 
     const form = trEdit.querySelector(".cookie-form");
@@ -70,6 +75,7 @@ async function loadCookies() {
       const newPath = form.path.value;
       const newSecure = form.secure.checked;
       const newHttpOnly = form.httpOnly.checked;
+      await browser.cookies.remove({ url: tab.url, name: cookie.name });
       await browser.cookies.set({
         url: tab.url,
         name: cookie.name,
@@ -78,6 +84,7 @@ async function loadCookies() {
         secure: newSecure,
         httpOnly: newHttpOnly,
       });
+      
       loadCookies();
     };
 
@@ -108,5 +115,10 @@ document.getElementById("deleteAllCookies").onclick = async () => {
   }
   loadCookies();
 };
+
+// document.getElementById("refreshCta").onclick = () =>{
+//   location.reload();
+//   window.location.reload
+// }
 
 loadCookies();

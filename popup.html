@@ -8,10 +8,23 @@
       font-family: system-ui, sans-serif;
       margin: 12px;
       width: 600px;
+      background-color: rgb(210, 216, 221);
     }
 
     h3 {
       margin-top: 0;
+      width: auto;
+    }
+
+    .d-inline {
+      display: inline;
+    }
+
+    #refreshCta {
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 8px;
+      vertical-align: middle;
     }
 
     table {
@@ -33,10 +46,27 @@
       text-align: left;
     }
 
+    tr{
+      border-bottom: 2px solid white;
+    }
+
     button {
       font-size: 12px;
       padding: 2px 6px;
       margin-right: 4px;
+    }
+
+    button.edit {
+      background: #4caf50;
+      color: white;
+      margin-left: 4px;
+      margin-bottom: 4px;
+    }
+
+    button.delete {
+      background: #f44336;
+      color: white;
+      margin-bottom: 4px;
     }
 
     input,
@@ -49,16 +79,29 @@
 
     .cookie-form {
       margin-bottom: 12px;
-      background-color: rgb(210, 216, 221);
+      background-color: white
     }
 
+    .cookie-form .boxes {
+      display: flex;
+      justify-content: space-around;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
     .cookie-form label {
       margin-bottom: 8px;
       font-weight: 500;
     }
 
     .cookie-form input[type="checkbox"] {
-      margin: unset;
+      margin: 0px;
+      display: inline;
+      width: 20px;
+    }
+
+    .cookie-form .cta {
+      text-align: center;
+      margin-bottom: 8px;
     }
 
     .cookie-values {
@@ -93,7 +136,8 @@
 </head>
 
 <body>
-  <h3>Cookies du site</h3>
+  <h3 class="d-inline">Cookies du site</h3>
+  <!-- <span id="refreshCta">&#x27F2;</span> -->
   <table>
     <thead>
       <tr>
