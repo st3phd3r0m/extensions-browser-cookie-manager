@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Cookie Manager Lite",
+  "version": "0.1",
+  "description": "Afficher, éditer, supprimer et ajouter des cookies pour le site courant.",
+  "permissions": [
+    "cookies",
+    "tabs",
+    "<all_urls>",
+    "storage"
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon48.png",
+    "default_title": "Cookie Manager Lite",
+    "browser_style": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+        "data_collection_permissions": {
+          "required": ["none"]
+         }
+      }
+  }
+}
