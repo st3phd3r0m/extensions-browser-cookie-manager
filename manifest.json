@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Cookie Manager Lite",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Afficher, éditer, supprimer et ajouter des cookies pour le site courant.",
   "permissions": [
     "cookies",
