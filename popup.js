@@ -1,12 +1,16 @@
+const ext = typeof browser !== "undefined" ? browser : chrome;
+
 async function getCurrentTab() {
-  const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-  return tab;
+  return new Promise((resolve) => {
+    ext.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      resolve(tabs[0]);
+    });
+  });
 }
 
 async function loadCookies() {
   const tab = await getCurrentTab();
-  const cookies = await browser.cookies.getAll({ url: tab.url });
-
+  ext.cookies.getAll({ url: tab.url }, (cookies) => {
   const tbody = document.getElementById("cookies");
   tbody.innerHTML = "";
 
@@ -114,18 +118,18 @@ async function loadCookies() {
         trEdit.style.display === "none" ? "\u25B6" : "\u25BC";
     };
 
-    form.querySelector(".delete").onclick = async () => {
-      await browser.cookies.remove({ url: tab.url, name: cookie.name });
+    deleteBtn.onclick = async () => {
+      await removeCookie({ url: tab.url, name: cookie.name });
       loadCookies();
     };
 
-    form.querySelector(".edit").onclick = async () => {
-      const newValue = form.value.value;
-      const newPath = form.path.value;
-      const newSecure = form.secure.checked;
-      const newHttpOnly = form.httpOnly.checked;
-      await browser.cookies.remove({ url: tab.url, name: cookie.name });
-      await browser.cookies.set({
+    editBtn.onclick = async () => {
+      const newValue = textareaValue.value;
+      const newPath = inputPath.value;
+      const newSecure = inputSecure.checked;
+      const newHttpOnly = inputHttpOnly.checked;
+      await removeCookie({ url: tab.url, name: cookie.name });
+      await setCookie({
         url: tab.url,
         name: cookie.name,
         value: newValue,
@@ -133,12 +137,12 @@ async function loadCookies() {
         secure: newSecure,
         httpOnly: newHttpOnly,
       });
-
       loadCookies();
     };
 
     tbody.appendChild(tr);
     tbody.appendChild(trEdit);
+  });
   });
 }
 
@@ -149,7 +153,7 @@ document.getElementById("addCookie").onclick = async () => {
   const value = document.getElementById("newValue").value;
 
   if (name && value) {
-    await browser.cookies.set({ url, name, value });
+    await setCookie({ url, name, value });
     document.getElementById("newName").value = "";
     document.getElementById("newValue").value = "";
     loadCookies();
@@ -158,16 +162,19 @@ document.getElementById("addCookie").onclick = async () => {
 
 document.getElementById("deleteAllCookies").onclick = async () => {
   const tab = await getCurrentTab();
-  const cookies = await browser.cookies.getAll({ url: tab.url });
-  for (const cookie of cookies) {
-    await browser.cookies.remove({ url: tab.url, name: cookie.name });
-  }
-  loadCookies();
+  ext.cookies.getAll({ url: tab.url }, async (cookies) => {
+    for (const cookie of cookies) {
+      await removeCookie({ url: tab.url, name: cookie.name });
+    }
+    loadCookies();
+  });
 };
 
-// document.getElementById("refreshCta").onclick = () =>{
-//   location.reload();
-//   window.location.reload
-// }
+function setCookie(details) {
+  return new Promise((resolve) => ext.cookies.set(details, resolve));
+}
+function removeCookie(details) {
+  return new Promise((resolve) => ext.cookies.remove(details, resolve));
+}
 
 loadCookies();
