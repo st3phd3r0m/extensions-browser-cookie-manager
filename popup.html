@@ -127,17 +127,35 @@
       background: #f9f9f9;
     }
 
-    #deleteAllCookies {
-      float: right;
+    #deleteAllCookies{
       background: rgb(188, 21, 68);
+      font-size: 25px;
+    }
+    #addCookie{
+      background: #4caf50;
+      font-size: 20px;
+    }
+    #deleteAllCookies,#addCookie {
+      float: right;
       color: #fff;
+      font-weight: bold;
+      padding: 4px 12px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #deleteAllCookies:hover, #addCookie:hover {
+      background: #333;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
   <h3 class="d-inline">Cookies du site</h3>
-  <!-- <span id="refreshCta">&#x27F2;</span> -->
+  <button id="deleteAllCookies">&#x1F5D1;</button>
   <table>
     <thead>
       <tr>
@@ -148,11 +166,10 @@
     <tbody id="cookies"></tbody>
   </table>
 
-  <h3>Ajouter un cookie</h3>
+  <h3 class="d-inline">Ajouter un cookie</h3>
+  <button id="addCookie">&#x2795;</button>
   <input id="newName" placeholder="Nom">
   <textarea id="newValue" placeholder="Valeur"></textarea>
-  <button id="addCookie">Ajouter</button>
-  <button id="deleteAllCookies">Supprimer tous les cookies</button>
 
   <script src="popup.js"></script>
 </body>
